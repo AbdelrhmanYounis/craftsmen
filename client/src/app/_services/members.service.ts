@@ -23,7 +23,7 @@ export class MembersService {
   constructor(private http: HttpClient, private accountService: AccountService) {
     this.accountService.currentUser$.pipe(take(1)).subscribe(user => {
       this.user = user;
-      this.userParams = new UserParams(user);
+      this.userParams = new UserParams();
     })
   }
 
@@ -36,7 +36,7 @@ export class MembersService {
   }
 
   resetUserParams() {
-    this.userParams = new UserParams(this.user);
+    this.userParams = new UserParams();
     return this.userParams;
   }
 
@@ -48,9 +48,10 @@ export class MembersService {
 
     let params = getPaginationHeaders(userParams.pageNumber, userParams.pageSize);
 
-    params = params.append('minAge', userParams.minAge.toString());
-    params = params.append('maxAge', userParams.maxAge.toString());
-    params = params.append('gender', userParams.gender);
+    params = params.append('craftId', userParams.craftId.toString());
+    params = params.append('countryId', userParams.countryId.toString());
+    params = params.append('governorateId', userParams.governorateId);
+    params = params.append('cityId', userParams.cityId);
     params = params.append('orderBy', userParams.orderBy);
 
     return getPaginatedResult<Member[]>(this.baseUrl + 'users', params, this.http)
@@ -97,6 +98,11 @@ export class MembersService {
     params = params.append('predicate', predicate);
     return getPaginatedResult<Partial<Member[]>>(this.baseUrl + 'likes', params, this.http);
   }
-
+  isLiked(memberId:number){
+    return this.http.get(this.baseUrl+'likes/IsLiked/'+memberId);
+  }
+  removeLike(memberId:number){
+    return this.http.delete(this.baseUrl+'likes/Delete/'+memberId);
+  }
   
 }

@@ -17,13 +17,27 @@ namespace API.Controllers;
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers([FromQuery] UserParams userParams)
         {
-            var gender = await _unitOfWork.UserRepository.GetUserGender(User.GetUsername());
-            userParams.CurrentUsername = User.GetUsername();
+            var user = await _unitOfWork.UserRepository.GetUserByUsernameAsync(User.GetUsername());
 
-            if (string.IsNullOrEmpty(userParams.Gender))
-                userParams.Gender = gender == "male" ? "female" : "male";
 
-            var users = await _unitOfWork.UserRepository.GetMembersAsync(userParams);
+            userParams.CurrentUsername = user.UserName;
+
+            //select cratsmen depend on member city
+            
+           if(userParams.CountryId==0 && userParams.CraftId==0)
+           userParams.CityId = await _unitOfWork.UserRepository.GetUserCityId(User.GetUsername());
+            
+
+            var users = await _unitOfWork.UserRepository.GetCraftsmenAsync(userParams);
+
+            foreach (var item in users)
+            {
+                if(await _unitOfWork.LikesRepository.GetUserLike(user.Id,item.Id)==null)
+                    item.IsLiked=false;
+
+                else
+                item.IsLiked=true;
+            }
 
             Response.AddPaginationHeader(users.CurrentPage, users.PageSize,
                 users.TotalCount, users.TotalPages);

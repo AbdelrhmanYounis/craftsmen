@@ -10,6 +10,7 @@ import { PresenceService } from 'src/app/_services/presence.service';
 import { AccountService } from 'src/app/_services/account.service';
 import { User } from 'src/app/_models/user';
 import { take } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-member-detail',
@@ -24,10 +25,11 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
   activeTab: TabDirective;
   messages: Message[] = [];
   user: User;
+  isLiked:boolean=false;
 
   constructor(public presence: PresenceService, private route: ActivatedRoute, 
     private messageService: MessageService, private accountService: AccountService,
-    private router: Router) { 
+    private router: Router, private memberService: MembersService, private toastr: ToastrService) { 
       this.accountService.currentUser$.pipe(take(1)).subscribe(user => this.user = user);
       this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     }
@@ -35,6 +37,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.route.data.subscribe(data => {
       this.member = data.member;
+      this.getIsliked(data.member.id);
     })
 
     this.route.queryParams.subscribe(params => {
@@ -43,10 +46,9 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
 
     this.galleryOptions = [
       {
-        width: '500px',
-        height: '500px',
+        width: '70%',
         imagePercent: 100,
-        thumbnailsColumns: 4,
+        thumbnailsColumns: 5,
         imageAnimation: NgxGalleryAnimation.Slide,
         preview: false
       }
@@ -57,16 +59,39 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
 
   getImages(): NgxGalleryImage[] {
     const imageUrls = [];
+    console.log(this.member.photos);
     for (const photo of this.member.photos) {
       imageUrls.push({
-        small: photo?.url,
-        medium: photo?.url,
-        big: photo?.url
+        small: "./assets/"+photo?.url,
+        medium:"./assets/"+ photo?.url,
+        big:"./assets/"+ photo?.url
       })
     }
     return imageUrls;
   }
-
+  addLike(member: Member) {
+    this.memberService.addLike(member.username).subscribe(() => {
+      this.toastr.success('You have liked ' + member.knownAs);
+      this.isLiked=true;
+    })
+  }
+  getIsliked(memberId:number){
+    
+    this.memberService.isLiked(memberId).subscribe(
+      (data:boolean)=>{
+        this.isLiked=data;
+      })    
+      
+  }
+  removeLike(member:Member){
+    
+    this.memberService.removeLike(member.id).subscribe(
+      (data:any)=>{
+        this.toastr.info('Unliked ' + member.knownAs);
+        this.isLiked=false;
+      })    
+      
+  }
   loadMessages() {
     this.messageService.getMessageThread(this.member.username).subscribe(messages => {
       this.messages = messages;

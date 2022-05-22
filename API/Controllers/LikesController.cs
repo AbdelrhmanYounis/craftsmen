@@ -50,13 +50,44 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<LikeDto>>> GetUserLikes([FromQuery] LikesParams likesParams)
         {
-            likesParams.UserId = User.GetUserId();
+            int UserId=User.GetUserId();
+            likesParams.UserId = UserId;
             var users = await _unitOfWork.LikesRepository.GetUserLikes(likesParams);
+
+            foreach (var item in users)
+            {
+                if(await _unitOfWork.LikesRepository.GetUserLike(UserId,item.Id)==null)
+                    item.IsLiked=false;
+
+                else
+                item.IsLiked=true;
+            }
 
             Response.AddPaginationHeader(users.CurrentPage,
                 users.PageSize, users.TotalCount, users.TotalPages);
 
             return Ok(users);
+        }
+         [HttpGet("IsLiked/{id}")]
+        public async Task<Boolean> IsLiked(int id)
+        {
+          return  (await _unitOfWork.LikesRepository.GetUserLike(User.GetUserId(),id)==null)?
+                   false: true;
+        }
+        [HttpDelete("Delete/{id}")]
+        public async Task <ActionResult> Delete(int id)
+        {
+            var Result=await _unitOfWork.LikesRepository.GetUserLike(User.GetUserId(),id);
+
+            if (Result != null){
+
+                _unitOfWork.LikesRepository.Delete(Result);
+                
+               return (await _unitOfWork.Complete())?
+               Ok():BadRequest("Failed to remove this Like !!");                 
+            }
+
+           return  BadRequest("Failed to remove this Like !!") ;
         }
     }
 }

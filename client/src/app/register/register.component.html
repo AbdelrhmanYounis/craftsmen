@@ -1,3 +1,4 @@
+<!--
 <form [formGroup]='registerForm' (ngSubmit)="registerForm.valid && register()" autocomplete="off">
     <h2 class="text-center text-primary">Sign up</h2>
     <hr>
@@ -55,3 +56,88 @@
         <button class="btn btn-default mr-2" (click)="cancel()" type="button">Cancel</button>
     </div>
 </form>
+-->
+<form class="form" [formGroup]='registerForm' (ngSubmit)="registerForm.valid && register()" autocomplete="off">
+    
+<div class="container">
+    <div class="row">
+    <h2 class="col-lg-12 form_title title text-center">Create Account</h2>
+   <hr>
+   <br>
+   
+        <app-text-input class="col-lg-6" [formControl]='registerForm.controls["username"]' 
+        [label]='"Username"' ></app-text-input>
+    
+    <app-text-input class="col-lg-6" [formControl]='registerForm.controls["knownAs"]' 
+        [label]='"Known As"'></app-text-input>
+
+        <app-text-input class="col-lg-6" [formControl]='registerForm.controls["email"]' 
+        [label]='"Email"'
+        [type]='"email"'></app-text-input>
+
+        <app-date-input class="col-lg-6" [formControl]='registerForm.controls["dateOfBirth"]' 
+        [label]='"Date Of Birth"' [maxDate]='maxDate'></app-date-input>
+
+       
+
+        <app-text-input class="col-lg-6" [formControl]='registerForm.controls["phoneNumber"]' 
+        [label]='"Phone Number"'
+        [type]='"phone"'></app-text-input>
+    
+    
+    
+       
+    
+    <app-select-input class="col-lg-6" [formControl]='registerForm.controls["country"]' 
+        [label]='"Country"'[type]='"Country"' [items]=" this.Countries"
+        (change)="loadGovernorates()"></app-select-input>       
+
+        <app-text-input class="col-lg-6" [formControl]='registerForm.controls["password"]' 
+        [label]='"Password"' [type]='"password"'>
+    </app-text-input>
+
+    <app-select-input class="col-lg-6" [formControl]='registerForm.controls["governorate"]' 
+    [label]='"Governorate"'[type]='"Governorate"'[items]=" this.Governorates"
+    (change)="loadCities()"></app-select-input>
+
+    <app-text-input class="col-lg-6" [formControl]='registerForm.controls["confirmPassword"]' 
+        [label]='"Confirm Password"'
+        [type]='"password"'></app-text-input>
+    
+        <app-select-input class="col-lg-6" [formControl]='registerForm.controls["cityId"]' 
+        [label]='"City"'[type]='"City"'[items]=" this.Cities"></app-select-input>   
+        <div class="col-lg-6">
+            <label style="margin-right: 10px;">I am a: </label>
+            <label class="form-check-label">
+                <input class="form-check-input" type="radio" value='male' formControlName='gender'> Male
+            </label>
+            <label class="form-check-label">
+                <input type="radio" value='female' formControlName='gender' class="form-check-input ms-3"> Female
+            </label>
+        </div>
+
+        <app-select-input class="col-lg-6" [formControl]='registerForm.controls["craftId"]' 
+        [label]='"Craft"'[type]='"Craft If You are a Craftsman"' [items]=" this.Crafts"
+        ></app-select-input>
+
+    
+    <div class="col-lg-12" *ngIf="validationErrors.length > 0">
+        <ul class="text-danger">
+            <li *ngFor="let error of validationErrors">
+                {{error}}
+            </li>
+        </ul>
+    </div>
+   
+    <div class="col-lg-6">
+        <button  class="button mt-1" style="width:80% ;margin-left: 10%;" type="submit"[disabled]='!registerForm.valid'>Register</button>
+    </div>
+    <div class="col-lg-6 ">
+        <button class="button mt-1" style="width:80% ;margin-left: 10%;" type="reset">Reset</button>
+    </div>
+</div>
+
+</div> 
+
+
+  </form>

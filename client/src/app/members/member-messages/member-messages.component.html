@@ -1,7 +1,7 @@
 <div class="card">
     <div class="card-body"
         #scrollMe
-        style="overflow: scroll; height: 535px;"
+        style="overflow: scroll; height: 480px;"
         [scrollTop]="scrollMe.scrollHeight"
     >
         <div *ngIf="(messageService.messageThread$ | async)?.length === 0">
@@ -12,9 +12,9 @@
             *ngIf="(messageService.messageThread$ | async).length > 0" 
             class="chat">
             <li *ngFor="let message of (messageService.messageThread$ | async)">
-                <div>
+                <div> 
                     <span class="chat-img float-end">
-                        <img class="rounded-circle" src="{{message.senderPhotoUrl || './assets/user.png'}}" 
+                        <img class="rounded-circle" src="./assets/{{message.senderPhotoUrl || 'Site/user.png'}}" 
                             alt="{{message.senderUsername}}">
                     </span>
                     <div class="chat-body">

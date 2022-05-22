@@ -15,7 +15,7 @@ import { CraftService } from '../_services/craft.service';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css']
+  styleUrls: ['./register.component.css','../home/home.component.scss']
 })
 export class RegisterComponent implements OnInit {
   @Output() cancelRegister = new EventEmitter();
@@ -45,6 +45,8 @@ export class RegisterComponent implements OnInit {
       gender: ['male'],
       username: ['', Validators.required],
       knownAs: ['', Validators.required],
+      email: ['', Validators.required],
+      phoneNumber: ['', Validators.required],
       dateOfBirth: ['', Validators.required], 
       craftId: [''],     
       country: ['', Validators.required],

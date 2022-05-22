@@ -24,9 +24,14 @@
         <thead>
             <tr>
                 <th style="width: 40%">Message</th>
-                <th style="width: 20%">From / To</th>
-                <th style="width: 20%">Sent / Received</th>
-                <th style="width: 20%"></th>
+                
+                <th  *ngIf="container === 'Outbox'">To</th>
+                <th  *ngIf="container === 'Outbox'">Sent</th>                
+               
+                <th  *ngIf="container !== 'Outbox'"> From </th>
+                <th  *ngIf="container !== 'Outbox'"> Received</th>
+
+                <th ></th>
             </tr>
         </thead>
         <tbody>
@@ -39,14 +44,14 @@
                 <div *ngIf="container === 'Outbox'">
                     <img 
                         class="img-circle rounded-circle me-2"
-                        src="{{message.recipientPhotoUrl || './assets/user.png'}}" 
+                        src="./assets/{{message.recipientPhotoUrl || 'Site/user.png'}}" 
                         alt="{{message.recipientUsername}}">
                     <strong>{{message.recipientUsername | titlecase}}</strong>
                 </div> 
                 <div *ngIf="container !== 'Outbox'">
                     <img 
                         class="img-circle rounded-circle me-2"
-                        src="{{message.senderPhotoUrl || './assets/user.png'}}" 
+                        src="./assets/{{message.senderPhotoUrl || 'Site/user.png'}}" 
                         alt="{{message.senderUsername}}">
                     <strong>{{message.senderUsername | titlecase}}</strong>
                 </div> 
@@ -61,7 +66,7 @@
     </table>
 </div>
 
-<div class="d-flex justify-content-center" *ngIf="pagination && !loading">
+<div class="d-flex justify-content-center" *ngIf="pagination.totalItems>0 && !loading">
     <pagination 
         [boundaryLinks]="true" 
         [totalItems]="pagination.totalItems"

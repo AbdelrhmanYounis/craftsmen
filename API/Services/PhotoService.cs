@@ -15,7 +15,7 @@ namespace API.Services
     {
         private readonly DataContext _context;
 
-        private string[] ImageExtentions = new string[] { "gif", "jpg", "png", "jpeg", "PNG" };
+        private string[] ImageExtentions = new string[] { "gif", "jpg", "png", "jpeg", "jfif" };
         public PhotoService(DataContext context)
         {
             _context = context;
@@ -28,7 +28,7 @@ namespace API.Services
                 return ("Please select profile picture");
 
             var extention = file.FileName.Substring(file.FileName.LastIndexOf('.') + 1);
-            if (ImageExtentions.Contains(extention))
+            if (ImageExtentions.Contains(extention.ToLower()))
             {
                var filePath=getFilePath();
 
@@ -43,21 +43,21 @@ namespace API.Services
                                 date.Hour, date.Minute, date.Second, date.Millisecond
                                 );
 
-                var uniqueFileName = "Data/"+username + uniqueID + "." + file.FileName.Split('.').LastOrDefault();
+                var uniqueFileName = username + uniqueID + "." + file.FileName.Split('.').LastOrDefault();
 
                 using (var fileStream = new FileStream(Path.Combine(filePath, uniqueFileName), FileMode.Create))
                 {
                     await file.CopyToAsync(fileStream);
                 }
 
-                return uniqueFileName;
+                return $"Data/{uniqueFileName}";
             }
 
             return null;
         }
          public bool DeletePhoto(string fileName)
         { 
-            var filePath=Path.Combine(getFilePath(),fileName) ;
+            var filePath=Path.Combine(getFilePath(),fileName.Substring(5)) ;
             if (File.Exists(filePath))
                 { 
                     System.IO.File.Delete(filePath);

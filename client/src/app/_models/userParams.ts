@@ -1,14 +1,9 @@
-import { User } from './user';
-
 export class UserParams {
-    gender: string;
-    minAge = 18;
-    maxAge = 99;
+    craftId=0;
+    countryId = 0;
+    governorateId = 0;
+    cityId=0;
     pageNumber = 1;
     pageSize = 24;
     orderBy = 'lastActive';
-
-    constructor(user: User) {
-        this.gender = user.gender === 'female' ? 'male' : 'female';
-    }
 }

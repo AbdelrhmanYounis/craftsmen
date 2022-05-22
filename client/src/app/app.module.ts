@@ -33,6 +33,8 @@ import { PhotoManagementComponent } from './admin/photo-management/photo-managem
 import { RolesModalComponent } from './modals/roles-modal/roles-modal.component';
 import { ConfirmDialogComponent } from './modals/confirm-dialog/confirm-dialog.component';
 import { SelectInputComponent } from './_forms/select-input/select-input.component';
+import { ImageCropperModule } from 'ngx-image-cropper';
+
 
 @NgModule({
   declarations: [
@@ -58,7 +60,7 @@ import { SelectInputComponent } from './_forms/select-input/select-input.compone
     PhotoManagementComponent,
     RolesModalComponent,
     ConfirmDialogComponent,
-    SelectInputComponent
+    SelectInputComponent,
   ],
   imports: [
     BrowserModule,
@@ -69,6 +71,7 @@ import { SelectInputComponent } from './_forms/select-input/select-input.compone
     ReactiveFormsModule,
     SharedModule,
     NgxSpinnerModule,
+    ImageCropperModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },

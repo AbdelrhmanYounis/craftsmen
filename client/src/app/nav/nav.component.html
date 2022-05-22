@@ -1,52 +1,64 @@
-<nav class="navbar navbar-expand-md navbar-dark fixed-top" style="background-color: #080808;">
-    <div class="container" style="background-color: #090909">
-        <a class="navbar-brand" routerLink='/' routerLinkActive='active'>
-            <img src="./assets/Site/Logo6.png" alt="Craftsmen Logo" class="imgLogo">
+<!-- Navbar-->
+<nav class="navbar navbar-expand-lg"style="background-color: #fff;padding: 0px;"*ngIf="(accountService.currentUser$ | async) as user">
+    <div class="container justify-content-between" style="padding-top: 28px;">
+      <!-- Left elements -->
+      <div class="d-flex">
+        <!-- Brand -->
+        <a class="navbar-brand me-2 mb-1 d-flex align-items-center"routerLink='/' routerLinkActive='active'>
+                <img src="./assets/Site/Logo1.png" alt="Craftsmen Logo" class="imgLogo">
         </a>
+  
+      </div>
+      <!-- Left elements -->
+     
+      <!-- Center elements -->
+      <ul class="d-none d-md-flex wrapper">
+        <li class="icon twitter">           
+            <span class="tooltip">Matches</span>
+            <span routerLink='/members' routerLinkActive='active'><i class="fa fa-users"></i></span>
+          </li>
+          <li class="icon github">           
+            <span class="tooltip">Likes</span>
+            <span routerLink='/lists' routerLinkActive='active'><i class="fa fa-heart"></i></span>
+          </li>
+          <li class="icon instagram">           
+            <span class="tooltip">Messages</span>
+            <span routerLink='/messages' routerLinkActive='active'><i class="fa fa-envelope"></i></span>
+          </li>
+          
+<!--
+        <li class="nav-item me-3 me-lg-1">
+          <a class="nav-link" routerLink='/lists' routerLinkActive='active'>
+            <i class="fa fa-heart fa-lg"></i>
+            <strong class="badge rounded-pill item">Likes</strong>
+          </a>
+        </li>
+      -->
+               
+      </ul>
+      <!-- right elements -->
+      <ul class="navbar-nav flex-row">
+      <li class="dropdown nav-item dropdown me-3 me-lg-1" dropdown>
+        <img
+              src="./assets/{{user.photoUrl|| 'Site/user.png'}}"
+              class="rounded-circle"
+              alt="{{user.username}}"
+              loading="lazy"
+              style="width: 55px;"
+            />
+        <a class="dropdown-toggle  align-items-sm-center text-decoration-none "  dropdownToggle>
+            <strong>{{user.knownAs || user.username | titlecase}}</strong>
+            </a>
+               <ul class="dropdown-menu mt-3" *dropdownMenu>
+           <li> <a routerLink='/member/edit' class="dropdown-item item">Edit Profile</a></li>
+            <li class="dropdown-divider"></li>
+           <li> <a class="dropdown-item item" (click)="logout()" >Logout</a></li>
+               </ul>
+    </li>
 
-        <ul class="navbar-nav me-auto">
-            <ng-container *ngIf="accountService.currentUser$ | async">
-                <li class="nav-item">
-                    <a class="nav-link" routerLink='/members' routerLinkActive='active' >Matches</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" routerLink='/lists' routerLinkActive='active'>Lists</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" routerLink='/messages'routerLinkActive='active' >Messages</a>
-                </li>
-                <li *appHasRole='["Admin", "Moderator"]' class="nav-item">
-                    <a class="nav-link" routerLink='/admin'routerLinkActive='active' >Admin</a>
-                </li>
-            </ng-container>
-        </ul>
 
-        <div class="dropdown" *ngIf="(accountService.currentUser$ | async) as user" dropdown>
-            <img src="./assets/{{user.photoUrl|| 'Site/user.png'}}" alt="{{user.username}}">
-            <a class="dropdown-toggle text-light ms-2 text-decoration-none" dropdownToggle>Welcome {{user.knownAs || user.username | titlecase}}</a>
-            <div class="dropdown-menu mt-3" *dropdownMenu>
-                <a routerLink='/member/edit' class="dropdown-item">Edit Profile</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" (click)="logout()" >Logout</a>
-            </div>
-        </div>
 
-        <form *ngIf="(accountService.currentUser$ | async) === null" #loginForm="ngForm" class="d-flex mt-2 mt-md-0" (ngSubmit)="login()" 
-            autocomplete="off">
-            <input 
-                name="username"
-                [(ngModel)]="model.username"
-                class="form-control me-sm-2" 
-                type="text" 
-                placeholder="Username">
-            <input 
-                name="password"
-                [(ngModel)]="model.password"
-                class="form-control me-sm-2" 
-                type="password" 
-                placeholder="Password">
-            <button class="btn btn-success my-2 my-sm-0" type="submit">Login</button>
-        </form>
+     </ul>
     </div>
-
-</nav>
+  </nav>
+  <!-- Navbar -->

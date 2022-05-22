@@ -11,6 +11,7 @@ import { PresenceService } from './_services/presence.service';
 export class AppComponent implements OnInit {
   title = 'Craftsmen';
   users: any;
+  
 
   constructor(private accountService: AccountService, private presence: PresenceService) {}
 

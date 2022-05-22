@@ -2,10 +2,10 @@
     <select 
 
         [class.is-invalid]="ngControl.touched && ngControl.invalid"
-        class="form-control" 
+        class="form__input" 
         [formControl]="ngControl.control"
         >
-        <option [ngValue]="null" disabled>-- Select {{type}} --</option>
+        <option [ngValue]="0" disabled>-- Select {{type}} --</option>
     <option *ngFor="let item of items" [ngValue]="item.id">{{item.name}}</option>
 
         </select>

@@ -1,57 +1,68 @@
 <div class="row" *ngIf="member">
-    <div class="col-4">
-        <h1>Your profile</h1>
-    </div>
-    <div class="col-8">
-        <div class="alert alert-info" *ngIf="editForm.dirty">
-            <strong>Information: </strong> You have made changes.  Any unsaved changes will be lost
-        </div>
-    </div>
-    <div class="col-4">
-        <div class="card">
-            <img src="./assets/{{member.photoUrl || 'author.jpg'}}" alt="{{member.knownAs}}" 
-                class="card-img-top img-thumbnail">
+  
+    <div class="col-12 col-md-3">
+        <div class="card card-bg">
+            <img  src="./assets/{{member.photoUrl || 'Site/user.png'}}" alt="{{member.knownAs}}" 
+                class="card-img-top img-thumbnail ms-5 mt-3">
+                <strong class="col-12 text-center mt-2">{{member.knownAs}}</strong>
+               
             <div class="card-body">
-                <div>
-                    <strong>Location:</strong>
-                    <p>{{member.city}}, {{member.country}}</p>
+                <div class="mt-4" *ngIf="member.craft">
+                    <i class="fa fa-briefcase"></i>
+                    <strong class="ms-2">Craft :</strong>
+                    <p class="ms-4">{{member.craft.name}}</p>
                 </div>
                 <div>
-                    <strong>Age:</strong>
-                    <p>{{member.age}}</p>
+                    <i class="fa fa-birthday-cake text-danger"></i>
+                    <i class="fa fa-birthday-cake text-warning"></i>
+                    <i class="fa fa-birthday-cake text-success"></i>
+                    <strong class="ms-2">Age :</strong>
+                    <p class="ms-4">{{member.age}}</p>
                 </div>
+                
                 <div>
-                    <strong>Last Active:</strong>
-                    <p>{{member.lastActive | timeago}}</p>
-                </div>
-                <div>
-                    <strong>Member since:</strong>
-                    <p>{{member.created | date: 'dd MMM yyyy'}}</p>
+                    <i class="fa fa-user-plus"></i>
+                    <strong class="ms-1">Account since :</strong>
+                    <p class="ms-4">{{member.created | date: 'dd MMM yyyy'}}</p>
                 </div>
             </div>
-            <div class="card-footer">
+            <div class="card-footer ">
                 <button [disabled]="!editForm.dirty" form="editForm" type="submit" class="btn btn-success btn-block">Save Changes</button>
             </div>
         </div>
     </div>
 
-    <div class="col-8">
+    <div class="col-9 card-bg">
+        <div class="alert alert-info" *ngIf="editForm.dirty">
+            <strong>Information: </strong> You have made changes.  Any unsaved changes will be lost
+        </div>
         <tabset class="member-tabset">
-            <tab heading='About {{member.knownAs}}'>
+            <tab heading='Edit Profile'>
                 <form #editForm="ngForm" id="editForm" (ngSubmit)="updateMember()">
-                    <h4>Description</h4>
-                    <textarea class="form-control" [(ngModel)]="member.introduction" name="introduction" rows="6"></textarea>
-                    <h4 class="mt-2">Looking for</h4>
-                    <textarea class="form-control" [(ngModel)]="member.lookingFor" name="lookingFor" rows="6"></textarea>
-                    <h4 class="mt-2">Interests</h4>
-                    <textarea class="form-control" [(ngModel)]="member.interests" name="interests" rows="6"></textarea>
-                    <h4 class="mt-2">Location Details: </h4>
-                    <div class="form-inline">
-                        <label for="city">City: </label>
-                        <input [(ngModel)]="member.city" type="text" name="city" class="form-control mx-2">
-                        <label for="city">Country: </label>
-                        <input [(ngModel)]="member.country" type="text" name="country" class="form-control mx-2">
+                    <div class="m-4">
+                        <i class="fa fa-address-card text-danger"></i>
+                        <strong class="ms-2">Address :</strong>
+                        <p class="ms-4">{{member.address}}</p>
                     </div>
+                    <div class="m-4 ">
+                        <i class="fa fa-phone-square text-success"></i>
+                        <strong class="ms-2">Mobile :</strong>
+                        <p class="ms-4">{{member.phoneNumber}}</p>
+                    </div>
+                    <div class="m-4">
+                        <i class="fa fa-facebook-square text-info"></i>
+                        <strong class="ms-2">Facebook :</strong>
+                        <p class="ms-4">{{member.facebookUrl}}</p>
+                    </div>
+                    <div class="m-4">
+                        <i class="fa fa-envelope text-warning"></i>
+                        <strong class="ms-2">Email :</strong>
+                        <p class="ms-4">{{member.email}}</p>
+                    </div>
+                    <div class="m-4">
+                    <h4>Work Experience</h4>
+                    <textarea class="form-control" [(ngModel)]="member.workExperience" name="workExperience" rows="6"></textarea>
+                </div>
                 </form>
                
             </tab>

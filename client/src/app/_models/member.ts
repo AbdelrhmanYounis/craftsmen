@@ -10,14 +10,17 @@ export interface Member {
     knownAs: string;
     created: Date;
     lastActive: Date;
+    phoneNumber:string;
+    email:string;
+    facebookUrl:string;
+    workExperience:string;
     gender: string;
-    introduction: string;
-    lookingFor: string;
-    interests: string;
+    address:string;
     cityId: number;
     city:City;
     craft:Craft;
-    CraftId:number;
+    craftId:number;
     photos: Photo[];
+    isLiked:boolean;
   }
   

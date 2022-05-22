@@ -5,6 +5,7 @@ import { User } from '../_models/user';
 import { ReplaySubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { PresenceService } from './presence.service';
+import { Member } from '../_models/member';
 
 @Injectable({
   providedIn: 'root'
@@ -28,8 +29,13 @@ export class AccountService {
     )
   }
 
-  register(model: any) {
-    console.log(model);
+  register(model: Member) {
+
+    if(model.craftId.toLocaleString()=="")
+    model.craftId=0;
+
+    console.log(model.craftId);
+    
     return this.http.post(this.baseUrl + 'account/register', model).pipe(
       map((user: User) => {
         if (user) {

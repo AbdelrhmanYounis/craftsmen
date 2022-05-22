@@ -10,10 +10,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Data.Repositories
 {
-    public class LikesRepository : ILikesRepository
+    public class LikesRepository : BaseRepository<UserLike>,ILikesRepository
     {
         private readonly DataContext _context;
-        public LikesRepository(DataContext context)
+        public LikesRepository(DataContext context):base(context)
         {
             _context = context;
         }
@@ -25,7 +25,9 @@ namespace API.Data.Repositories
 
         public async Task<PagedList<LikeDto>> GetUserLikes(LikesParams likesParams)
         {
-            var users = _context.Users.OrderBy(u => u.UserName).AsQueryable();
+            var users = _context.Users.Include(x=>x.Craft)
+                        .Include(c=>c.City).ThenInclude(g=>g.Governorate).ThenInclude(t=>t.Country)
+                        .OrderBy(u => u.UserName).AsQueryable();
             var likes = _context.Likes.AsQueryable();
 
             if (likesParams.Predicate == "liked")
@@ -46,7 +48,8 @@ namespace API.Data.Repositories
                 KnownAs = user.KnownAs,
                 Age = user.DateOfBirth.CalculateAge(),
                 PhotoUrl = user.Photos.FirstOrDefault(p => p.IsMain).Url,
-                City = user.City.Name,
+                address = $"{user.City.Governorate.Country.Name}, {user.City.Governorate.Name}, {user.City.Name}",
+                Craft = user.Craft,
                 Id = user.Id
             });
 

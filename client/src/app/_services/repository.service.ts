@@ -18,12 +18,6 @@ export class RepositoryService {
     }
     GetByParentId(controllerName:string,id:number){
       return this.http.get(this.baseUrl+controllerName+'/GetByParentId/'+id);
-      /*.pipe(
-      map( (data:any)=>{ 
-         console.log("3e3r3"+data);
-         return data;
-       }));
-       */
      }
 
    GetById(controllerName:string,id:number){

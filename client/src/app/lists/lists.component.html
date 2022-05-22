@@ -1,5 +1,5 @@
 <div class="text-center mt-3">
-    <h2>{{predicate === 'liked' ? 'Members I like' : 'Members who like me'}}</h2>
+    <h2>{{predicate === 'liked' ? 'Members I like' : 'Members who like me'}} - {{pagination?.totalItems}} found</h2>
 </div>
 
 <div class="container mt-3">
@@ -14,12 +14,12 @@
 
     <div class="row mt-3">
         <div class="col-2" *ngFor="let member of members">
-            <app-member-card [member]="member"></app-member-card>
+            <app-member-card [member]="member"[pageName]='"Likes"'></app-member-card>
         </div>
     </div>
 </div>
 
-<div class="d-flex justify-content-center" *ngIf="pagination">
+<div class="d-flex justify-content-center" *ngIf="pagination.totalItems>0">
     <pagination 
         [boundaryLinks]="true" 
         [totalItems]="pagination.totalItems"

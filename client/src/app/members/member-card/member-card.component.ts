@@ -11,6 +11,8 @@ import { PresenceService } from 'src/app/_services/presence.service';
 })
 export class MemberCardComponent implements OnInit {
   @Input() member: Member;
+  @Input() pageName: string;
+  IsRemoved:boolean=false;
 
   constructor(private memberService: MembersService, private toastr: ToastrService, 
     public presence: PresenceService) { }
@@ -19,9 +21,24 @@ export class MemberCardComponent implements OnInit {
   }
 
   addLike(member: Member) {
+    
     this.memberService.addLike(member.username).subscribe(() => {
-      this.toastr.success('You have liked ' + member.knownAs);
+      this.toastr.success('liked ' + member.knownAs);
+      this.member.isLiked=true;
+      
     })
   }
+  removeLike(member:Member){
 
+    this.memberService.removeLike(member.id).subscribe(
+      (data:any)=>{
+        this.toastr.info('Unliked ' + member.knownAs);
+        this.member.isLiked=false;
+        if(this.pageName=="Likes")
+        {
+          this.IsRemoved=true;
+        }
+      })    
+      
+  }
 }
